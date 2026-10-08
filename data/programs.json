@@ -1,0 +1,1035 @@
+{
+ "book_vintage": "ny.ced.psc10@2026-08-01",
+ "status": "candidate",
+ "in_force_on": "2026-10-07",
+ "programs": {
+  "auto_dlm": {
+   "name": "Auto Dynamic Load Management program (\"Auto-DLM\")",
+   "rider": "Rider AC",
+   "option": "agreement",
+   "season": {
+    "start": "05-01",
+    "end": "09-30",
+    "months": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   },
+   "days": "all",
+   "exclude_holidays": false,
+   "min_kw": 50,
+   "events": {
+    "contingency": {
+     "min_duration_hours": null,
+     "obligation_hours": null,
+     "counts_toward_rate_step": false
+    },
+    "test": {
+     "min_duration_hours": 1,
+     "obligation_hours": 1,
+     "counts_toward_rate_step": false
+    }
+   },
+   "rates_in_tariff": false,
+   "reservation_rate_key": null,
+   "reservation_rates": {},
+   "performance_rates": {},
+   "performance_factor_initial": null
+  },
+  "csrp": {
+   "name": "Commercial System Relief Program (CSRP)",
+   "rider": "Rider T",
+   "option": "reservation",
+   "season": {
+    "start": "05-01",
+    "end": "09-30",
+    "months": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   },
+   "days": "weekdays",
+   "exclude_holidays": true,
+   "min_kw": 50,
+   "events": {
+    "planned": {
+     "min_duration_hours": null,
+     "obligation_hours": 4,
+     "counts_toward_rate_step": true
+    },
+    "unplanned": {
+     "min_duration_hours": null,
+     "obligation_hours": null,
+     "counts_toward_rate_step": false
+    },
+    "test": {
+     "min_duration_hours": 1,
+     "obligation_hours": 1,
+     "counts_toward_rate_step": false
+    }
+   },
+   "rates_in_tariff": true,
+   "reservation_rate_key": "county_group",
+   "reservation_rates": {
+    "other": {
+     "<=4": 18.0,
+     ">=5": 23.0
+    },
+    "westchester_staten_island": {
+     "<=4": 6.0,
+     ">=5": 11.0
+    }
+   },
+   "performance_rates": {
+    "planned": 1.0,
+    "test": 1.0,
+    "unplanned": 6.0
+   },
+   "performance_factor_initial": 0.5
+  },
+  "dlrp": {
+   "name": "Distribution Load Relief Program (DLRP)",
+   "rider": "Rider T",
+   "option": "reservation",
+   "season": {
+    "start": "05-01",
+    "end": "09-30",
+    "months": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   },
+   "days": "all",
+   "exclude_holidays": false,
+   "min_kw": 50,
+   "events": {
+    "contingency": {
+     "min_duration_hours": 4,
+     "obligation_hours": 4,
+     "counts_toward_rate_step": true
+    },
+    "immediate": {
+     "min_duration_hours": 6,
+     "obligation_hours": 4,
+     "counts_toward_rate_step": true
+    },
+    "test": {
+     "min_duration_hours": 2,
+     "obligation_hours": 2,
+     "counts_toward_rate_step": false
+    }
+   },
+   "rates_in_tariff": true,
+   "reservation_rate_key": "dlrp_tier",
+   "reservation_rates": {
+    "tier_1": {
+     "<=4": 18.0,
+     ">=5": 23.0
+    },
+    "tier_2": {
+     "<=4": 25.0,
+     ">=5": 30.0
+    }
+   },
+   "performance_rates": {
+    "contingency": 1.0,
+    "immediate": 1.0,
+    "test": 1.0
+   },
+   "performance_factor_initial": 0.5
+  },
+  "term_dlm": {
+   "name": "Term Dynamic Load Management (\"Term-DLM\")",
+   "rider": "Rider AC",
+   "option": "agreement",
+   "season": {
+    "start": "05-01",
+    "end": "09-30",
+    "months": [
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   },
+   "days": "weekdays",
+   "exclude_holidays": true,
+   "min_kw": 50,
+   "events": {
+    "planned": {
+     "min_duration_hours": null,
+     "obligation_hours": 4,
+     "counts_toward_rate_step": false
+    },
+    "test": {
+     "min_duration_hours": 1,
+     "obligation_hours": 1,
+     "counts_toward_rate_step": false
+    }
+   },
+   "rates_in_tariff": false,
+   "reservation_rate_key": null,
+   "reservation_rates": {},
+   "performance_rates": {},
+   "performance_factor_initial": null
+  }
+ },
+ "networks": {
+  "BATTERY PARK CITY": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BAY RIDGE": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BEEKMAN": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BORDEN": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BOROUGH HALL": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BOWLING GREEN": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BRIGHTON BEACH": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "BUCHANAN": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "CANAL": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "CEDAR STREET": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "CENTRAL BRONX": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "CENTRAL PARK": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "CHELSEA": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "CITY HALL": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "COLUMBUS CIRCLE": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "COOPER SQUARE": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "CORTLANDT": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "CROWN HEIGHTS": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "ELMSFORD No. 2": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "EMPIRE": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "FASHION": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "FLATBUSH": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "FLUSHING": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "FORDHAM": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "FOX HILLS": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "FREEDOM": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "FRESH KILLS": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "FULTON": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "GRAND CENTRAL": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "GRANITE HILL": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "GRASSLANDS": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "GREELEY SQUARE": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "GREENWICH": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "HARLEM": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "HARRISON": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "HERALD SQUARE": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "HUDSON": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "HUNTER": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "JACKSON HEIGHTS": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "JAMAICA": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "KIPS BAY": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "LENOX HILL": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "LINCOLN SQUARE": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "LONG ISLAND CITY": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "MADISON SQUARE": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "MASPETH": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "MIDTOWN WEST": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "MILLWOOD WEST": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "MOHANSIC": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "MORGAN": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "NORTHEAST BRONX": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "OCEAN PARKWAY": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "OSSINING WEST": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "PARK PLACE": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "PARK SLOPE": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "PENNSYLVANIA": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "PLAZA": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "PLEASANTVILLE": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "PROSPECT PARK": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "REGO PARK": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "RICHMOND HILL": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "RIDGEWOOD": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "RIVERDALE": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "ROCKEFELLER CENTER": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "ROCKVIEW": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "ROOSEVELT": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "SHEEPSHEAD BAY": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "SHERIDAN SQUARE": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "SOUTHEAST BRONX": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "SUNNYSIDE": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "SUTTON": {
+   "contracted_hours": [
+    11,
+    15
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "TIMES SQUARE": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "TRIBORO": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "TURTLE BAY": {
+   "contracted_hours": [
+    14,
+    18
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "WAINWRIGHT": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "WASHINGTON HEIGHTS": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "WASHINGTON STREET": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "WEST BRONX": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "WHITE PLAINS": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "WILLIAMSBURG": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_2",
+   "county_group": "other",
+   "program_year": 2026
+  },
+  "WILLOWBROOK": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "WOODROW": {
+   "contracted_hours": [
+    19,
+    23
+   ],
+   "response_window_hours": 4,
+   "dlrp_tier": "tier_1",
+   "county_group": "westchester_staten_island",
+   "program_year": 2026
+  },
+  "YORKVILLE": {
+   "contracted_hours": [
+    16,
+    20
+   ],
+   "response_window_hours": 6,
+   "dlrp_tier": "tier_1",
+   "county_group": "other",
+   "program_year": 2026
+  }
+ },
+ "networks_source": {
+  "document_ids": [
+   "ced-psc10-url-ced-csrp-call-windows-2026"
+  ],
+  "program_year": [
+   2026
+  ],
+  "lineage": [
+   "ny.ced.psc10.value_stack.drv.window"
+  ]
+ },
+ "notes": [
+  "Reservation rates are USD/kW-month keyed by reservation_rate_key (county_group for CSRP, dlrp_tier for DLRP) and by cumulative counted events (<=4 / >=5).",
+  "Program Agreement (Rider AC) rates are not in the tariff: the platform supplies them under programs.term_dlm.* / programs.auto_dlm.*.",
+  "networks: contracted_hours from the annual CSRP call-window edition; response_window_hours, dlrp_tier and county_group are null until the networks document is re-extracted with the program schema."
+ ]
+}

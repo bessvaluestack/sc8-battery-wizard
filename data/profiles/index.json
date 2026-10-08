@@ -1,0 +1,22 @@
+[
+ {
+  "id": "midrise_gas_windowac",
+  "name": "Mid-rise, 150 units, gas heat, window AC",
+  "description": "Master-metered mid-rise; evening-peaking residential load with a moderate summer AC bump. Rate I sized (~300 kW)."
+ },
+ {
+  "id": "highrise_central_cooling",
+  "name": "High-rise, 400 units, central chiller, gas heat",
+  "description": "Central cooling plant makes summer afternoons the annual peak (~850 kW); flat-ish shoulder seasons."
+ },
+ {
+  "id": "complex_heat_pumps",
+  "name": "Large complex, 600 units, electric heat pumps",
+  "description": "Electrified heating: winter-peaking mornings (~1,000 kW) plus a summer cooling peak. Tests non-summer demand charges."
+ },
+ {
+  "id": "tower_rate2",
+  "name": "Tower, 900 units, central plant (>1,500 kW, Rate II)",
+  "description": "Above the 1,500 kW mandatory time-of-day threshold (~2,300 kW peak); pairs with Rate II and Rider M supply."
+ }
+]

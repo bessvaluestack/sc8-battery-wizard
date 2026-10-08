@@ -1,0 +1,167 @@
+{
+ "book_vintage": "ny.ced.psc10@2026-08-01",
+ "in_force_on": "2026-10-07",
+ "status": "candidate",
+ "delivery_adjustments_usd_per_kwh": {
+  "sbc_total_nyserda": {
+   "value": 0.0039,
+   "statement": {
+    "file": "18.json",
+    "name": "Statement of Systems Benefit Charge Surcharge",
+    "effective": "2026-03-01"
+   },
+   "applies": "all SCs"
+  },
+  "mac": {
+   "value": 0.00422,
+   "statement": {
+    "file": "176.json",
+    "name": "Statement of Monthly Adjustment Clause",
+    "effective": "2026-09-01"
+   },
+   "applies": "all except SC 11"
+  },
+  "mac_adjustment_factor": {
+   "value": 8.6e-05,
+   "statement": {
+    "file": "177.json",
+    "name": "Statement of Adjustment Factor - MAC",
+    "effective": "2026-09-14"
+   },
+   "applies": "all"
+  },
+  "rdm_sc8": {
+   "value": -0.00726,
+   "statement": {
+    "file": "38.json",
+    "name": "Statement of Revenue Decoupling Mechanism Adjustment",
+    "effective": "2026-08-01"
+   },
+   "applies": "SC 8"
+  },
+  "sdr_sc8_rates_i_ii_iii": {
+   "value": -0.001189,
+   "statement": {
+    "file": "18.json",
+    "name": "Statement of Delivery Revenue Surcharge",
+    "effective": "2026-02-01"
+   },
+   "applies": "SC 8 Rates I, II, III"
+  }
+ },
+ "delivery_adjustments_usd_per_kw_month": {
+  "sbc_sc8_rate_i_monthly_max": {
+   "value": 1.76,
+   "statement": {
+    "file": "18.json",
+    "name": "Statement of Systems Benefit Charge Surcharge",
+    "effective": "2026-03-01"
+   },
+   "determinant": "monthly_max_demand_kw"
+  },
+  "sbc_sc8_rates_ii_iii_tod": {
+   "value": 1.76,
+   "statement": {
+    "file": "18.json",
+    "name": "Statement of Systems Benefit Charge Surcharge",
+    "effective": "2026-03-01"
+   },
+   "determinant": "tod_demand_kw",
+   "window": {
+    "days": "weekdays",
+    "hours": [
+     8,
+     22
+    ],
+    "months": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ]
+   }
+  }
+ },
+ "msc_capacity_usd_per_kw_month": {
+  "note": "Statement of Market Supply Charge - Capacity (one monthly statement, not a 12-month profile); billed on the monthly maximum demand of full-service customers",
+  "nyc": {
+   "rate1": 22.87,
+   "rate2": 25.81,
+   "rate3": 23.26,
+   "rider_m_icap_tag": 12.45
+  },
+  "westchester": {
+   "rate1": 8.35,
+   "rate2": 9.42,
+   "rate3": 8.49,
+   "rider_m_icap_tag": 5.4
+  }
+ },
+ "merchant_function_charge_usd_per_kwh": {
+  "scs5_6_8_9_12_13_total": 0.002256,
+  "components": {
+   "supply_related": 0.001546,
+   "credit_and_collection": 0.000406,
+   "uncollectible_bill_expense": 0.000348,
+   "transition_adjustment": -4.4e-05
+  }
+ },
+ "msc_adjustment_factors_usd_per_kwh": {
+  "note": "Statement of Adjustment Factors - MSC: month-specific reconciliation factors; the app defaults them to zero and shows these values",
+  "reconciliation_all_other_nonresidential": {
+   "nyc": -0.026229,
+   "westchester": 0.002073
+  },
+  "reconciliation_rider_m_nonresidential": {
+   "nyc": -0.036194,
+   "westchester": -0.007892
+  },
+  "tax_reimbursement_recovery_nonresidential": 0.000341
+ },
+ "indexed_not_compiled": [
+  {
+   "type_code": "CBC",
+   "name": "Customer Benefit Contribution Statement",
+   "effective": "2026-03-01",
+   "rows": 78
+  },
+  {
+   "type_code": "RDM",
+   "name": "Statement of Revenue Decoupling Mechanism Adjustment",
+   "effective": "2026-08-01",
+   "rows": 8
+  },
+  {
+   "type_code": "SBC",
+   "name": "Statement of Systems Benefit Charge Surcharge",
+   "effective": "2026-03-01",
+   "rows": 71
+  },
+  {
+   "type_code": "SDR",
+   "name": "Statement of Delivery Revenue Surcharge",
+   "effective": "2026-02-01",
+   "rows": 14
+  },
+  {
+   "type_code": "TEL",
+   "name": "Statement of Rental Rates Applicable to Telecommunications Companies",
+   "effective": "2026-09-01",
+   "rows": 20
+  },
+  {
+   "type_code": "VDER-CR",
+   "name": "Statement of Value of Distributed Energy Resources Cost Recovery",
+   "effective": "2025-12-01",
+   "rows": 94
+  }
+ ]
+}

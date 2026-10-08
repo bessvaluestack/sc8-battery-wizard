@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SC 8 Battery Wizard</title>
+<meta name="description" content="Annual savings of a behind-the-meter battery for a Con Edison SC 8 multifamily building: rate, supply, riders, load, battery, dispatch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <img class="mark" src="img/srea.png" alt="" width="33" height="32">
+      <div>
+        <h1>SC 8 Battery Wizard</h1>
+        <p>Behind-the-meter storage on Con Edison multiple-dwelling service</p>
+      </div>
+    </div>
+    <div class="top-status" id="status">Loading tariff data</div>
+  </div>
+</header>
+<div class="shell">
+  <nav class="stepper" id="stepper" aria-label="Steps"></nav>
+  <main class="panel" id="panel"></main>
+  <aside class="rail" id="rail"></aside>
+</div>
+<footer class="foot">
+  <p id="footnote"></p>
+</footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
