@@ -7,6 +7,9 @@ import { buildTariffArrays, makeCharge, monthlyPeakGroups, billFromProfile, peak
 import { buildSupply } from './supply.js';
 import { buildPrograms } from './programs.js';
 
+// Delivered share of the pledge below which results flag a Rider T program.
+export const MIN_PERFORMANCE = 0.8;
+
 export const RATE_LABELS = { 1: 'Rate I (standard)', 2: 'Rate II (mandatory time-of-day, >1,500 kW)', 3: 'Rate III (voluntary time-of-day)' };
 
 // Match on the key suffix: the source data prefixes keys with their origin
@@ -130,14 +133,22 @@ export function programRevenue(stack, lpIn, sol) {
     const reservation = pg.reservationValuePerKw * s.D;
     const performance = pg.performanceRate * perfKwh;
     const meta = stack.programs.programs.find((p) => p.id === pg.id);
+    const eventKw = pg.events.map((e) => { let sum = 0; for (const t of e.intervals) sum += s.r[t]; return e.intervals.length ? sum / e.intervals.length : 0; });
     out.streams.push({
       id: pg.id, label: meta.label, pledgeKw: pg.pledgeKw, deliveredKw: s.D, factor: pg.pledgeKw ? s.D / pg.pledgeKw : 0,
-      reservation, performance, reliefKwh: relief, events: pg.events.length, terms: meta.terms,
+      reservation, performance, reliefKwh: relief, events: pg.events.length, eventKw, terms: meta.terms,
       eventDays: meta.events.map((e) => e.day), hours: meta.events.length ? meta.events[0].hours : null,
     });
     out.total += reservation + performance;
   });
   return out;
+}
+
+// Storage one full event at the pledge takes, from discharge alone (relief is
+// the baseline minus import), against what the battery can use.
+export function eventEnergyCheck(battery, pledgeKw, hours) {
+  const etaD = Math.sqrt(battery.rte);
+  return { needKwh: pledgeKw * hours / etaD, usableKwh: battery.kwh * battery.usableFrac, etaD };
 }
 
 export function summarize(stack, load, battery, baselineBill, solBill, solBillOnly, lpIn, sol, revenue) {

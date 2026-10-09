@@ -30,10 +30,13 @@ one-time bridge (see *Data*).
    supply), or an uploaded interval CSV (ISO or US timestamps, or Green
    Button date + time columns; kW or kWh; any interval 5 to 60 min).
 5. **Battery**: kW, kWh, round-trip efficiency, usable depth, annual cycle
-   limit, optional throughput cost and installed cost.
+   limit, optional throughput cost and installed cost (k$). Warns when the
+   battery cannot carry one full program event at the pledged kW (usable kWh
+   below pledge x event hours / discharge efficiency, or kW below the pledge).
 6. **Results**: annual savings (bill savings + program revenue), the bill by
    component before and after, monthly peaks, a week of dispatch with state
-   of charge, assumptions and provenance, JSON / CSV export.
+   of charge, assumptions and provenance, JSON / CSV export. CSRP or DLRP
+   delivering under 80% of the pledge (weakest event) is flagged.
 
 ## Model
 

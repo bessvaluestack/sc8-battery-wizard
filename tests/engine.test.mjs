@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import loadHighs from '../vendor/highs/highs.mjs';
 import { buildIndex, T, DT_HOURS } from '../js/timeidx.js';
 import { buildTariffArrays, billFromProfile, peakOf } from '../js/tariff.js';
-import { buildStack, billFor, lpInputs, programRevenue, summarize } from '../js/model.js';
+import { buildStack, billFor, lpInputs, programRevenue, summarize, eventEnergyCheck, MIN_PERFORMANCE } from '../js/model.js';
 import { buildLP, extractSolution, solveWithCycleCap } from '../js/lp.js';
 import { parseIntervalCsv, scaleToBill, stats } from '../js/profiles.js';
 
@@ -116,6 +116,21 @@ test('full-year solve on a preset with CSRP enrolled runs and saves money', asyn
   assert.ok(sum.savingsBill > 0);
   assert.ok(sum.cycles <= 300.01);
   assert.ok(rev.streams[0].deliveredKw > 0);
+  // 190 kWh usable cannot carry a 4-hour 100 kW event: under-performs, and the
+  // delivered share is the weakest event's mean relief.
+  const csrp = rev.streams[0];
+  assert.equal(csrp.eventKw.length, 3);
+  assert.ok(Math.abs(Math.min(...csrp.eventKw) - csrp.deliveredKw) < 0.5);
+  assert.ok(csrp.factor < MIN_PERFORMANCE);
+  const chk = eventEnergyCheck(battery, 100, 4);
+  assert.ok(chk.usableKwh < chk.needKwh);
+});
+
+test('event energy check: pledge x hours over discharge efficiency vs usable energy', () => {
+  const c = eventEnergyCheck({ kwh: 500, usableFrac: 0.9, rte: 0.81 }, 100, 4);
+  assert.ok(Math.abs(c.needKwh - 400 / 0.9) < 1e-9);
+  assert.equal(c.usableKwh, 450);
+  assert.ok(c.usableKwh > c.needKwh);
 });
 
 test('CSRP and DLRP together: performance is paid under both on concurrent hours', () => {

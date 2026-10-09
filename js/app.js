@@ -1,6 +1,6 @@
 // Wizard controller: state, rendering, and the run.
 import { buildIndex, DT_HOURS, MONTH_NAMES, labelOf } from './timeidx.js';
-import { buildStack, billFor, lpInputs, programRevenue, summarize, RATE_LABELS } from './model.js';
+import { buildStack, billFor, lpInputs, programRevenue, summarize, eventEnergyCheck, MIN_PERFORMANCE, RATE_LABELS } from './model.js';
 import { SUPPLY_MODES } from './supply.js';
 import { PROGRAM_IDS, PROGRAM_LABELS } from './programs.js';
 import { stats, scaleToBill, parseIntervalCsv, toCsv } from './profiles.js';
@@ -438,8 +438,24 @@ async function stepBattery() {
       ${field('Throughput cost', numInput('battery.throughputCost', B.throughputCost, { step: 0.001, min: 0, unit: '$/kWh' }), 'Optional degradation charge per kWh discharged; stops cycling for pennies.')}
       ${field('Installed cost (optional)', numInput('battery.capexK', B.capexK, { step: 1, min: 0, unit: 'k$', nullable: true }), 'Thousands of dollars. Only used for a simple payback figure.')}
     </div>
+    ${pledgeFlags()}
     <div id="runBox"></div>
     <div class="actions"><button type="button" class="btn" data-nav="-1">Back</button><button type="button" class="btn primary" id="runBtn" ${running ? 'disabled' : ''}>Run simulation</button></div>`;
+}
+
+// Warn when the battery cannot carry one full program event at the pledge.
+function pledgeFlags() {
+  let progs;
+  try { progs = getStack().programs.programs.filter((p) => p.events.length); } catch (e) { return ''; }
+  if (!progs.length) return '';
+  const b = batterySpec(), pledge = progs[0].pledgeKw;
+  const hours = Math.max(...progs.map((p) => p.events[0].hours[1] - p.events[0].hours[0]));
+  const names = progs.map((p) => p.id.toUpperCase().replace('_', '-')).join(' / ');
+  const { needKwh, usableKwh, etaD } = eventEnergyCheck(b, pledge, hours);
+  const flags = [];
+  if (usableKwh < needKwh) flags.push(`Too small for the ${fmtN(pledge)} kW pledge on the Riders step: one ${hours}-hour ${names} event needs about ${fmtN(needKwh)} kWh of usable storage (${(etaD * 100).toFixed(0)}% discharge efficiency), and this battery has ${fmtN(usableKwh)} kWh usable (${fmtN(b.kwh)} kWh x ${(b.usableFrac * 100).toFixed(0)}%). Add energy or lower the pledge.`);
+  if (b.kw < pledge) flags.push(`The ${fmtN(b.kw)} kW power rating is below the ${fmtN(pledge)} kW pledge, so no event can be met in full.`);
+  return flags.map((f) => `<p class="flag">${f}</p>`).join('');
 }
 
 function batterySpec() {
@@ -505,6 +521,11 @@ async function stepResults() {
   }
   if (R.revenue.streams.length) rows.push(`<tr class="total"><td>Net annual cost</td><td class="num">${fmt$(B.total)}</td><td class="num">${fmt$(W.total - R.revenue.total)}</td><td class="num ok">${fmt$(S.savingsTotal)}</td></tr>`);
   const monthRows = S.monthly.map((m) => `<tr><td>${m.month}</td><td class="num">${fmtN(m.peakBefore)}</td><td class="num">${fmtN(m.peakAfter)}</td><td class="num">${fmtN(m.peakBefore - m.peakAfter)}</td><td class="num">${fmt$(m.demandBefore - m.demandAfter)}</td><td class="num">${fmtN(m.kwhAfter - m.kwhBefore)}</td></tr>`).join('');
+  const weak = R.revenue.streams.filter((s) => (s.id === 'csrp' || s.id === 'dlrp') && s.factor < MIN_PERFORMANCE).map((s) => {
+    const worst = s.eventKw.indexOf(Math.min(...s.eventKw));
+    const avg = s.eventKw.reduce((a, b) => a + b, 0) / s.eventKw.length / s.pledgeKw;
+    return `<p class="flag">${esc(s.label)}: the battery delivers ${(s.factor * 100).toFixed(0)}% of the ${fmtN(s.pledgeKw)} kW pledge on its weakest event (${s.eventDays[worst]}) and ${(avg * 100).toFixed(0)}% on average over ${s.events} events, below ${MIN_PERFORMANCE * 100}% performance for the year. Add battery energy or power, or lower the pledge.</p>`;
+  });
   const weeks = weekOptions(R.load.kw);
   const sup = R.stack.supply;
   const assumptions = [
@@ -527,6 +548,7 @@ async function stepResults() {
       <div><div class="k">Annual peak</div><div class="v">${fmtN(S.peakBefore)} &rarr; ${fmtN(S.peakAfter)}</div><div class="s">kW, ${R.stack.demandIntervalMin}-minute</div></div>
       ${capex ? `<div><div class="k">Simple payback</div><div class="v">${S.savingsTotal > 0 ? (capex / S.savingsTotal).toFixed(1) + ' yr' : '-'}</div><div class="s">on ${fmt$(capex / 1000)}k installed</div></div>` : ''}
     </div>
+    ${weak.join('')}
     ${S.billOnlySavings !== null ? `<p class="note">Dispatching for the bill alone would save ${fmt$(S.billOnlySavings)}; holding capacity for program events ${S.billOnlySavings > S.savingsBill ? `costs ${fmt$(S.billOnlySavings - S.savingsBill)} of bill savings` : 'costs nothing on the bill'} and earns ${fmt$(R.revenue.total)}.</p>` : ''}
     <h3>Annual bill, baseline vs with battery</h3>
     <div class="tablewrap"><table><thead><tr><th>Component</th><th class="num">Baseline</th><th class="num">With battery</th><th class="num">Savings</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
