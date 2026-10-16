@@ -41,8 +41,7 @@ export function proformaData({ stack, load, sol, summary, revenue, battery }, { 
   for (const s of revenue.streams) {
     const season = programMonths[s.id] || [5, 6, 7, 8, 9];
     for (const m of season) programs[m - 1] += s.reservation / season.length;
-    const eventHours = s.hours ? s.hours[1] - s.hours[0] : 0;
-    s.eventKw.forEach((kw, e) => { programs[+s.eventDays[e].split('/')[0] - 1] += s.terms.performanceRate * kw * eventHours; });
+    s.eventPerfKwh.forEach((kwh, e) => { programs[+s.eventDays[e].split('/')[0] - 1] += s.terms.performanceRate * kwh; });
   }
 
   const inputs = { C9: 'Con Edison', C10: rateLabel, C16: battery.kw, C17: battery.kwh, C18: battery.usableFrac, C19: 1 - battery.usableFrac, C20: 1, C21: battery.rte };

@@ -144,9 +144,11 @@ export function programRevenue(stack, lpIn, sol) {
     const performance = pg.performanceRate * perfKwh;
     const meta = stack.programs.programs.find((p) => p.id === pg.id);
     const eventKw = pg.events.map((e) => { let sum = 0; for (const t of e.intervals) sum += s.r[t]; return e.intervals.length ? sum / e.intervals.length : 0; });
+    const perfSet = new Set(perf);
+    const eventPerfKwh = pg.events.map((e) => { let sum = 0; for (const t of e.intervals) if (perfSet.has(t)) sum += s.r[t]; return sum * DT_HOURS; });
     out.streams.push({
       id: pg.id, label: meta.label, pledgeKw: pg.pledgeKw, deliveredKw: s.D, factor: pg.pledgeKw ? s.D / pg.pledgeKw : 0,
-      reservation, performance, reliefKwh: relief, events: pg.events.length, eventKw, terms: meta.terms,
+      reservation, performance, reliefKwh: relief, events: pg.events.length, eventKw, eventPerfKwh, terms: meta.terms,
       eventDays: meta.events.map((e) => e.day), hours: meta.events.length ? meta.events[0].hours : null,
     });
     out.total += reservation + performance;

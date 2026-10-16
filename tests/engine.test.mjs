@@ -133,13 +133,24 @@ test('event energy check: pledge x hours over discharge efficiency vs usable ene
   assert.ok(c.usableKwh > c.needKwh);
 });
 
-test('CSRP and DLRP together: performance is paid under both on concurrent hours', () => {
+test('CSRP and DLRP together: concurrent hours pay performance under CSRP only', () => {
   const cfg = { rateNo: 1, voltage: 'lt', region: 'nyc', zone: 'J', demandIntervalMin: 15, taxPct: 0, supply: { mode: 'coned_msc' },
     programs: { enabled: { csrp: true, dlrp: true }, network: 'YORKVILLE', pledgeKw: 100, events: { csrp: 3, dlrp: 2 } } };
-  const stack = buildStack(cfg, data);
-  const dlrp = stack.programs.programs.find((p) => p.id === 'dlrp');
-  assert.equal(dlrp.performanceIntervals, null);
-  assert.ok(stack.programs.notes.some((n) => n.includes('under both programs')));
+  const { programs } = buildStack(cfg, data).programs;
+  const csrp = programs.find((p) => p.id === 'csrp'), dlrp = programs.find((p) => p.id === 'dlrp');
+  const csrpSet = new Set(csrp.events.flatMap((e) => [...e.intervals]));
+  const dlrpAll = dlrp.events.flatMap((e) => [...e.intervals]);
+  assert.ok(dlrpAll.some((t) => csrpSet.has(t)), 'the top-priced days overlap in this case');
+  assert.equal(csrp.performanceIntervals, null);
+  assert.deepEqual([...dlrp.performanceIntervals], dlrpAll.filter((t) => !csrpSet.has(t)).sort((a, b) => a - b));
+});
+
+test('CSRP and Term-DLM cannot be combined', () => {
+  const cfg = { rateNo: 1, voltage: 'lt', region: 'nyc', zone: 'J', demandIntervalMin: 15, taxPct: 0, supply: { mode: 'coned_msc' },
+    programs: { enabled: { csrp: true, term_dlm: true }, network: 'YORKVILLE', pledgeKw: 100, events: { csrp: 3, term_dlm: 3 }, termDlm: { reservationRate: 10 } } };
+  const out = buildStack(cfg, data).programs;
+  assert.equal(out.programs.length, 0);
+  assert.match(out.blocked[0], /cannot be combined/);
 });
 
 test('two-stage cycle cap: a tight budget binds and reports a marginal value', async () => {

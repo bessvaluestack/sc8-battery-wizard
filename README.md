@@ -148,8 +148,11 @@ node scripts/make_profiles.mjs
   is the Rider M exempt case and stays selectable).
 - MSC adjustment factors are included at the statement value for the supply
   mode and region (editable).
-- On concurrent CSRP and DLRP event hours the same relief earns performance
-  under both programs.
+- Program combinations follow the tariff (revised 2026-10-16): CSRP + DLRP
+  or Term-DLM + DLRP, never CSRP + Term-DLM (Rider AC I.2). Both
+  reservations are paid on the same pledge; an hour in both programs' events
+  pays performance once, CSRP over DLRP (Rider T J) and DLRP over Term-DLM
+  (Rider AC I.1).
 - Import only (no export, no Rider R / standby).
 - Single editable tax/surcharge percentage (2.5%).
 

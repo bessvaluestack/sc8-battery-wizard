@@ -2,7 +2,7 @@
 import { buildIndex, DT_HOURS, MONTH_NAMES, labelOf } from './timeidx.js';
 import { buildStack, billFor, monthlyBills, lpInputs, programRevenue, summarize, eventEnergyCheck, MIN_PERFORMANCE, RATE_LABELS } from './model.js';
 import { SUPPLY_MODES } from './supply.js';
-import { PROGRAM_IDS, PROGRAM_LABELS } from './programs.js';
+import { PROGRAM_IDS, PROGRAM_LABELS, PROGRAM_EXCLUDES } from './programs.js';
 import { stats, scaleToBill, scaleToMonthlyBills, parseIntervalCsv, toCsv } from './profiles.js';
 import { solveDispatch } from './solve.js';
 import { barChart, lineChart } from './charts.js';
@@ -184,6 +184,9 @@ function bindInputs(root) {
       else v = input.value;
       if (input.dataset.cast === 'int') v = parseInt(v, 10);
       setPath(state, input.dataset.path, v);
+      // Enrolling in a program drops the ones it cannot be combined with.
+      const prog = input.dataset.path.match(/^programs\.enabled\.(\w+)$/);
+      if (prog && v) for (const x of PROGRAM_EXCLUDES[prog[1]] || []) state.programs.enabled[x] = false;
       if (input.dataset.path === 'region') state.zone = v === 'nyc' ? 'J' : (state.zone === 'J' ? 'H' : state.zone);
       // Rate II customers are on Rider M hourly pricing by default.
       if (input.dataset.path === 'rateNo' && v === 2 && state.supply.mode === 'coned_msc') state.supply.mode = 'coned_mhp';
@@ -337,6 +340,7 @@ async function stepRiders() {
     <fieldset><legend>Enrol</legend>
       ${PROGRAM_IDS.map((id) => { const pr = pg.programs[id]; return `<label class="check"><input type="checkbox" data-path="programs.enabled.${id}" ${P.enabled[id] ? 'checked' : ''}><span><b>${PROGRAM_LABELS[id]}</b><span class="d">${pr.season.start} to ${pr.season.end}, ${pr.days === 'weekdays' ? 'non-holiday weekdays' : 'any day'}, ${pr.events[Object.keys(pr.events).find((k) => pr.events[k].counts_toward_rate_step) || Object.keys(pr.events)[0]].obligation_hours || 4}-hour events from the network's Contracted Hours; minimum ${pr.min_kw} kW per direct participant.${id === 'csrp' ? ' Reservation $/kW-month by county group, stepping up from the fifth counted event; $1/kWh performance.' : id === 'dlrp' ? ' Reservation by DLRP tier, stepping up at five contingency events; $1/kWh performance.' : ' Rates come from the Program Agreement: enter them below.'}</span></span></label>`; }).join('')}
     </fieldset>
+    <p class="note">CSRP and DLRP can be combined, and so can Term-DLM and DLRP; CSRP and Term-DLM cannot (Rider AC I.2). Both reservations are paid on the same pledge, but an hour in both programs' events pays performance once: CSRP over DLRP, DLRP over Term-DLM.</p>
     ${anyOn ? `
     <div class="grid2">
       ${field('Distribution network', select('programs.network', P.network, [['', 'Select the site network'], ...nets.map(([n, r]) => [n, `${n} (${r.county_group === 'westchester_staten_island' ? 'Westchester / SI' : 'NYC'}, ${r.dlrp_tier.replace('_', ' ')}, ${r.contracted_hours[0]}:00 to ${r.contracted_hours[1]}:00)`])]), 'Contracted Hours, DLRP tier and CSRP county group key on it (2026 call-window edition).')}

@@ -48,7 +48,7 @@ test('fill: hourly profiles, rates, savings and program revenue land in their ce
   const sol = { imp, dis: new Float64Array(load.length) };
   const battery = { kw: 100, kwh: 200, rte: 0.88, usableFrac: 0.95, cyclesPerYear: 250, throughputCost: 0 };
   const base = billFor(stack, load), withB = billFor(stack, imp);
-  const revenue = { total: 3000, streams: [{ id: 'csrp', reservation: 2500, performance: 500, eventKw: [50, 75], eventDays: ['7/14', '8/3'], hours: [14, 18], terms: { performanceRate: 1 } }] };
+  const revenue = { total: 3000, streams: [{ id: 'csrp', reservation: 2500, performance: 500, eventKw: [50, 75], eventPerfKwh: [200, 300], eventDays: ['7/14', '8/3'], hours: [14, 18], terms: { performanceRate: 1 } }] };
   const summary = summarize(stack, load, battery, base, withB, null, null, sol, revenue);
   const months = Array.from({ length: 12 }, (_, m) => 10000 + m * 100);
   const run = { stack, load, sol, summary, revenue, battery };

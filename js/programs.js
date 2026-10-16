@@ -14,6 +14,13 @@ import { hourlyToIntervals } from './supply.js';
 import { aggregatorNote, PLEDGE_MISSING } from './edition.js';
 
 export const PROGRAM_IDS = ['csrp', 'dlrp', 'term_dlm'];
+// Rider AC I.2: Rider T customers cannot take Rider AC, except Term-DLM with
+// DLRP. So CSRP and Term-DLM exclude each other.
+export const PROGRAM_EXCLUDES = { csrp: ['term_dlm'], term_dlm: ['csrp'], dlrp: [] };
+// On concurrent Load Relief Hours only one program pays performance: no DLRP
+// performance during CSRP hours (Rider T J), no Term-DLM performance during
+// DLRP hours (Rider AC I.1). program -> the programs that take its hours.
+const PERFORMANCE_YIELDS_TO = { dlrp: ['csrp'], term_dlm: ['dlrp'] };
 export const PROGRAM_LABELS = {
   csrp: 'Rider T - Commercial System Relief Program (CSRP)',
   dlrp: 'Rider T - Distribution Load Relief Program (DLRP)',
@@ -102,6 +109,9 @@ export function buildPrograms(cfg, data, zone) {
   out.network = { name: cfg.network, ...net };
   const pledge = +cfg.pledgeKw || 0;
   if (pledge <= 0) { out.blocked.push(PLEDGE_MISSING); return out; }
+  for (const id of enabled) for (const x of PROGRAM_EXCLUDES[id] || []) {
+    if (id < x && enabled.includes(x)) { out.blocked.push(`${id.toUpperCase()} and ${x.toUpperCase().replace('_', '-')} cannot be combined (Rider AC I.2: of Rider T, only DLRP can be added to Term-DLM).`); return out; }
+  }
   const lbmp15 = hourlyToIntervals(data.lbmp[zone].hourly);
   const eventSets = {};
   for (const id of enabled) {
@@ -123,13 +133,17 @@ export function buildPrograms(cfg, data, zone) {
     });
     for (const f of tm.flags) out.notes.push(f);
   }
-  // Concurrent CSRP + DLRP hours: performance is paid under both programs
-  // (owner decision 2026-10-08), so no interval is excluded from either.
-  const csrp = out.programs.find((p) => p.id === 'csrp'), dlrp = out.programs.find((p) => p.id === 'dlrp');
-  if (csrp && dlrp) {
-    let overlap = 0;
-    for (const t of eventSets.dlrp) if (eventSets.csrp.has(t)) overlap++;
-    if (overlap) out.notes.push('CSRP and DLRP events overlap on the top-priced days; the same relief earns performance under both programs.');
+  // Concurrent hours pay performance under one program only; the reservation
+  // is unaffected.
+  for (const p of out.programs) {
+    const over = (PERFORMANCE_YIELDS_TO[p.id] || []).filter((x) => eventSets[x]);
+    if (!over.length) continue;
+    const own = [...eventSets[p.id]].sort((a, b) => a - b);
+    const keep = own.filter((t) => !over.some((x) => eventSets[x].has(t)));
+    if (keep.length === own.length) continue;
+    p.performanceIntervals = Int32Array.from(keep);
+    const hours = (own.length - keep.length) / STEPS_PER_HOUR;
+    out.notes.push(`${p.id.toUpperCase().replace('_', '-')} and ${over.map((x) => x.toUpperCase()).join(', ')} events overlap for ${hours} hours; those hours pay performance under ${over.map((x) => x.toUpperCase()).join(', ')} only.`);
   }
   out.notes.push('Baseline for load relief = the no-battery meter (this profile). Con Edison\'s Customer Baseline Load method is not reproduced; a daily-cycling battery erodes a CBL over time.');
   out.notes.push('Event days are the highest-priced Capability Period days by day-ahead LBMP, chosen with perfect foresight; reservation is paid in proportion to the delivered share (maximin over events).');
