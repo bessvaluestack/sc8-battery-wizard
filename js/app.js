@@ -225,7 +225,7 @@ async function stepRate() {
   const stack = getStack();
   const t = stack.tariff;
   const kwhRows = [['NYSERDA SBC surcharge', k.sbc_total_nyserda], ['Monthly Adjustment Clause (MAC)', k.mac], ['MAC adjustment factor', k.mac_adjustment_factor], ['Revenue decoupling (RDM), SC 8', k.rdm_sc8], ['Delivery revenue surcharge (SDR)', k.sdr_sc8_rates_i_ii_iii]];
-  const demandTable = stack.ta.demandCharges.map((c) => `<tr><td>${esc(c.name.replace(/_/g, ' '))}</td><td>${c.months.length === 12 ? 'all year' : c.months.map((m) => MONTH_NAMES[m - 1]).join(', ')}</td><td>${c.days}${c.hours ? `, ${c.hours[0]}:00 to ${c.hours[1]}:00` : ', all hours'}</td><td class="num">${c.rate.toFixed(2)}</td></tr>`).join('');
+  const demandTable = stack.ta.demandCharges.map((c) => `<tr><td>${esc(c.name.replace(/_/g, ' '))}</td><td>${c.months.length === 12 ? 'all year' : c.months.map((m) => MONTH_NAMES[m - 1]).join(', ')}</td><td>${c.days === 'all' ? 'all days' : c.days}${c.hours ? `, ${c.hours[0]}:00 to ${c.hours[1]}:00` : ', all hours'}</td><td class="num">${c.rate.toFixed(2)}</td></tr>`).join('');
   return `
     <h2>Delivery rate</h2>
     <p class="lede">Con Edison P.S.C. No. 10, Service Classification 8 (Multiple Dwellings, Redistribution).${edition.rateProvenance(t)}</p>
